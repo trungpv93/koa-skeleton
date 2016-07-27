@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  {% if title %}
+    <title>{{ title }} {% if appname %} - {{appname}}{% endif %}</title>
+  {% endif %}
+
+  <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.6/flatly/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.3/toastr.min.css">
+
+  <link href="/css/app.css" type="text/css" rel="stylesheet">
+
+  <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+  <div class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <a href="../" class="navbar-brand">XXX</a>
+        <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#navbar-main">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+      </div>
+
+          <ul class="nav navbar-nav">
+            <!-- <li class="active"><a href="#">Home</a></li> -->
+            <li class="{% if ctx.path == '/users' %}active{% endif %}">
+              <a href="/users">Users</a>
+            </li>
+            <!-- <li><a href="#contact">Contact</a></li> -->
+          </ul>
+
+      <div class="navbar-collapse collapse" id="navbar-main">
+
+        <ul class="nav navbar-nav navbar-right">
+          {% if ctx.currUser %}
+            <li><a href="{{ ctx.currUser.url }}">
+              <span class="glyphicon glyphicon-user"></span>
+                  {{ ctx.currUser.uname }}
+                  {% if ctx.currUser.role == 'ADMIN' %}
+                    <span class="label label-info">Admin</span>
+                  {% elif ctx.currUser.role == 'MOD' %}
+                    <span class="label label-info">Mod</span>
+                  {% endif %}
+            </a></li>
+            {% if ctx.currUser.role == 'ADMIN' %}
+              <li><a href="/admin">Admin Panel</a></li>
+            {% endif %}
+            <li>
+              <a href="/sessions/{{ ctx.currSessionId }}">Logout</a>
+            </li>
+          {% else %}
+            <li class="{% if ctx.path == '/login' %}active{% endif %}"><a href="/login">Login</a></li>
+            <li class="{% if ctx.path == '/register' %}active{% endif %}"><a href="/register">Sign Up</a></li>
+          {% endif %}
+          <li><a href="/report">Report a Bug</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="Content">
+    <div class="container">
+        <!-- Display flash message -->
+        {% if ctx.flash and ctx.flash.message %}
+          <div class="alert alert-{{ ctx.flash.message[0] }}"
+               role="alert">
+            {{ ctx.flash.message[1] }}
+          </div>
+        {% endif %}
+
+        {% block embed %}{% endblock %}
+
+      <footer>
+        <div class="row">
+          <div class="col-lg-12">
+
+            <ul class="list-unstyled">
+              <li class="pull-right"><a href="#top"><i class="fa fa-hand-o-up" aria-hidden="true"></i> Back to top</a></li>
+              <li><a href="#">Blog</a></li>
+              <li><a href="https://www.facebook.com/homnaynghegi">Facebook</a></li>
+              <li><a href="#">API</a></li>
+              <li><a href="#">Support</a></li>
+            </ul>
+            <p>Made with ♥ by trungpv. Contact me at <a href="mailto:trungpv93@outlook.com">trungpv93@outlook.com</a>.</p>
+          </div>
+        </div>
+
+      </footer>
+    </div><!-- /.container -->
+    </div>
+
+  <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+  <!-- Include all compiled plugins (below), or include individual files as needed -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/js/bootstrap.min.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.14.0/lodash.min.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-timeago/1.5.3/jquery.timeago.min.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.3/toastr.min.js"></script>
+
+  <script type="text/javascript" src="/js/app.js"></script>
+
+  {% block scripts %}{% endblock %}
+</body>
+
+</html>
